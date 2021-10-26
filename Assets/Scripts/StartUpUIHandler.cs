@@ -49,6 +49,6 @@ public class StartUpUIHandler : MonoBehaviour
     }
     void ExitGame()
     {
-        Application.Quit();
+        //Application.Quit();
     }
 }
