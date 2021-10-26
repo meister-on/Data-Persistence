@@ -15,8 +15,10 @@ public class MainManager : MonoBehaviour
     public Text BestScoreText;
     public Button backToStart;
     public GameObject GameOverText;
+    public GameObject startGameText;
     private int highScore;
     private string nameHighScore;
+
 
     private bool m_Started = false;
     private int m_Points;
@@ -45,22 +47,25 @@ public class MainManager : MonoBehaviour
             }
         }
 
+    
+    }
     void TextInitialise()
-        {
-            m_HighScore = 0;
-            n_name = StartUpManager.Instance.main_Name;
-            
-            LoadHighScore();
-            string path = Application.persistentDataPath + "/high_score.json";
-            if (File.Exists(path))
-            {
-                BestScoreText.text = "Best Score : " + nameHighScore + " : " + highScore;
-            }
-            else
-            {
+    {
+        m_HighScore = 0;
+        n_name = StartUpManager.Instance.main_Name;
 
-                BestScoreText.text = "Best Score : " + n_name + " : " + m_HighScore;
-            }
+        LoadHighScore();
+        //if there is a high score, choose the hig scor from there
+        string path = Application.persistentDataPath + "/high_score.json";
+        if (File.Exists(path))
+        {
+            BestScoreText.text = "Best Score : " + nameHighScore + " : " + highScore;
+        }
+        //if there is no high score yet take the high score from the current game
+        else
+        {
+
+            BestScoreText.text = "Best Score : " + n_name + " : " + m_HighScore;
         }
     }
 
@@ -71,6 +76,7 @@ public class MainManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 m_Started = true;
+                startGameText.SetActive(false);
 
                 float randomDirection = Random.Range(-1.0f, 1.0f);
                 Vector3 forceDir = new Vector3(randomDirection, 1, 0);
