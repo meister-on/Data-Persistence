@@ -8,14 +8,18 @@ public class StartUpUIHandler : MonoBehaviour
     public InputField nameInput;
     public Button startGameButton;
     public Button hallOfFameButton;
+    public Button exitButton;
+    public Text fillInNameReminderText;
     // Start is called before the first frame update
     void Start()
     {
         //whenever the player writes something into the input field, the name is updated
+        fillInNameReminderText.text = "";
         nameInput.text = StartUpManager.Instance.main_Name;
         nameInput.onValueChanged.AddListener(delegate { AssignName(); });
         startGameButton.onClick.AddListener(StartGame);
         hallOfFameButton.onClick.AddListener(StartHallOfFame);
+        exitButton.onClick.AddListener(ExitGame);
     }
 
     void AssignName()
@@ -27,12 +31,24 @@ public class StartUpUIHandler : MonoBehaviour
 
     void StartGame()
     {
-        //loads the main scene
-        SceneManager.LoadScene("main");
+        //loads the main scene when there is a name input
+        if (nameInput.text != "")
+        {
+            SceneManager.LoadScene("main");
+        }
+        else
+        {
+            fillInNameReminderText.text = "Input a Name";
+        }
+        
     }
     void StartHallOfFame()
     {
         //loads the Hall of Fame
         SceneManager.LoadScene("HallOfFame");
+    }
+    void ExitGame()
+    {
+        Application.Quit();
     }
 }

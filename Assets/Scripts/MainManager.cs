@@ -13,6 +13,7 @@ public class MainManager : MonoBehaviour
 
     public Text ScoreText;
     public Text BestScoreText;
+    public Button backToStart;
     public GameObject GameOverText;
     private int highScore;
     private string nameHighScore;
@@ -130,6 +131,11 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         GameOverText.SetActive(true);
         SaveHighScore();
+    }
+    public void BackToStart()
+    {
+        SaveHighScore();
+        SceneManager.LoadScene("StartUp");
     }
     [System.Serializable]
     class SaveData
