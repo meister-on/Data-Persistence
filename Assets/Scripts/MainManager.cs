@@ -32,42 +32,11 @@ public class MainManager : MonoBehaviour
     void Start()
     {
         TextInitialise();
-        const float step = 0.6f;
-        int perLine = Mathf.FloorToInt(4.0f / step);
-
-        int[] pointCountArray = new[] { 1, 1, 2, 2, 5, 5 };
-        for (int i = 0; i < LineCount; ++i)
-        {
-            for (int x = 0; x < perLine; ++x)
-            {
-                Vector3 position = new Vector3(-1.5f + step * x, 2.5f + i * 0.3f, 0);
-                var brick = Instantiate(BrickPrefab, position, Quaternion.identity);
-                brick.PointValue = pointCountArray[i];
-                brick.onDestroyed.AddListener(AddPoint);
-            }
-        }
+        BricksInitialise();
 
     
     }
-    void TextInitialise()
-    {
-        m_HighScore = 0;
-        n_name = StartUpManager.Instance.main_Name;
-
-        LoadHighScore();
-        //if there is a high score, choose the hig scor from there
-        string path = Application.persistentDataPath + "/high_score.json";
-        if (File.Exists(path))
-        {
-            BestScoreText.text = "Best Score : " + nameHighScore + " : " + highScore;
-        }
-        //if there is no high score yet take the high score from the current game
-        else
-        {
-
-            BestScoreText.text = "Best Score : " + n_name + " : " + m_HighScore;
-        }
-    }
+   
 
     private void Update()
     {
@@ -94,12 +63,49 @@ public class MainManager : MonoBehaviour
             }
         }
     }
+    void BricksInitialise()
+    {
+        const float step = 0.6f;
+        int perLine = Mathf.FloorToInt(4.0f / step);
+
+        int[] pointCountArray = new[] { 1, 1, 2, 2, 5, 5 };
+        for (int i = 0; i < LineCount; ++i)
+        {
+            for (int x = 0; x < perLine; ++x)
+            {
+                Vector3 position = new Vector3(-1.5f + step * x, 2.5f + i * 0.3f, 0);
+                var brick = Instantiate(BrickPrefab, position, Quaternion.identity);
+                brick.PointValue = pointCountArray[i];
+                brick.onDestroyed.AddListener(AddPoint);
+            }
+        }
+    }
+    void TextInitialise()
+    {
+        m_HighScore = 0;
+        n_name = StartUpManager.Instance.main_Name;
+
+        LoadHighScore();
+        //if there is a high score, choose the hig scor from there
+        string path = Application.persistentDataPath + "/high_score.json";
+        if (File.Exists(path))
+        {
+            BestScoreText.text = "Best Score : " + nameHighScore + " : " + highScore;
+        }
+        //if there is no high score yet take the high score from the current game
+        else
+        {
+
+            BestScoreText.text = "Best Score : " + n_name + " : " + m_HighScore;
+        }
+    }
 
     void AddPoint(int point)
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
         BestScore();
+        if (m_Points == 96 || m_Points == 192 || m_Points == 288) { BricksInitialise(); }
     }
     void BestScore()
     {
